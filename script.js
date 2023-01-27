@@ -3,6 +3,7 @@ let title = "Второй урок";
 console.log(typeof title);
 
 let screens = "Простые, Сложные, Интерактивные"
+console.log(screens.length);
 
 
 let screenPrice = 24;
