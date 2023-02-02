@@ -14,25 +14,25 @@ let servicePercentPrice
  let service1 
 let service2 
 let a
+let num
 
 
 
-
-const cup = function() {
-	const a = +prompt("Сколько это будет стоить?")
-		if (!isNaN(parseFloat(a) && isFinite(a))) {
-			return a
-		}
-		else {
-			return
+// const cup = function() {
+// 	const a = +prompt("Сколько это будет стоить?")
+// 		if (!isNaN(parseFloat(a) && isFinite(a))) {
+// 			return a
+// 		}
+// 		else {
+// 			return
 			
-		}
-}
+// 		}
+// }
 
-
-const inNumber = function(num){
-		return !isNaN(num) && isFinite(num)
+const isNumber = function(num){
+	return !isNaN(parseFloat(num)) && isFinite(num)
 }
+		 
 
 const ascing = function() {
 	title = prompt('Как называется ваш проект?','калькулятор верстки');
@@ -40,7 +40,7 @@ const ascing = function() {
 
 	 do {
 		screenPrice = +prompt('Сколько будет стоить данная работа?');
-	 } while(!inNumber(screenPrice))
+	 } while(!isNumber(screenPrice))
 
 
 	adaptive = confirm('Нужен ли адаптив на сайте?'); 
@@ -59,21 +59,25 @@ const  getAllServicePrices = function(){
 
 	let sum = 0
 	for( let i = 0; i < 2; ++i) {
-		if(i === 0 ){
+		if(i === 0 ) 
+		{
 			service1 = prompt("Какой дополнительный тип услуги нужен?")
+
 		}else if(i === 1){
 			service2 = prompt("Какой дополнительный тип услуги нужен?")
 		}
 
-		let cost
-	 	 while (!cost) {
+	// 	let cost
+	//  	 while (!cost) {
+	// 		cost = cup()
+	// 		if(cost) {
+	// 			sum += cost}}
+	let priceAll 
+		do {
+			priceAll = prompt("Сколько это будет стоить?")
+		} while (!isNumber(priceAll))
 
-			cost = cup()
-
-			if(cost) {
-				sum += cost
-			}
-	 	 }
+		sum += +priceAll
 	}
 	return sum
 }
