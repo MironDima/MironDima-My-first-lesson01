@@ -13,23 +13,34 @@ let fullPrice
 let servicePercentPrice
  let service1 
 let service2 
+let a
 
 
 
-const cup = function(num) {
-	return !isNaN(parseFloat(num) && isFinite(num))
+
+const cup = function() {
+	const a = +prompt("Сколько это будет стоить?")
+		if (!isNaN(parseFloat(a) && isFinite(a))) {
+			return a
+		}
+		else {
+			return
+			
+		}
+}
+
+
+const inNumber = function(num){
+		return !isNaN(num) && isFinite(num)
 }
 
 const ascing = function() {
 	title = prompt('Как называется ваш проект?','калькулятор верстки');
 	screens = prompt("Какие типы экранов нужно разработать?",'Простые, Сложные, Интерактивные')
 
-	// while (!inNumber(screenPrice)) {
-		//screenPrice = +prompt('Сколько будет стоить данная работа?');
-	// }
 	 do {
-		screenPrice = prompt('Сколько будет стоить данная работа?');
-	 } while(isNaN(screenPrice) || screenPrice === "" || screenPrice === null)
+		screenPrice = +prompt('Сколько будет стоить данная работа?');
+	 } while(!inNumber(screenPrice))
 
 
 	adaptive = confirm('Нужен ли адаптив на сайте?'); 
@@ -54,16 +65,15 @@ const  getAllServicePrices = function(){
 			service2 = prompt("Какой дополнительный тип услуги нужен?")
 		}
 
-		sum += +prompt("Сколько это будет стоить?")
-		
+		let cost
+	 	 while (!cost) {
 
-	 	 while (!cup(sum)) {
+			cost = cup()
 
-			sum += +prompt("Сколько это будет стоить?")
-		
+			if(cost) {
+				sum += cost
+			}
 	 	 }
-
-		  
 	}
 	return sum
 }
@@ -110,13 +120,14 @@ fullPrice = getFullPrice()
 title = getTitle();
 servicePercentPrice = getServicePercentPrices()
 
+
 showTypeOf(title)
 showTypeOf(screenPrice)
 showTypeOf(adaptive)
 
-console.log(getRollbackMessage(fullPrice))
 
-console.log('allServicePrices' , allServicePrices);
+console.log(getRollbackMessage(fullPrice))
+console.log('Дополнительные услуги', allServicePrices ,typeof allServicePrices);
 
 
 console.log(typeof title);
@@ -125,8 +136,6 @@ console.log(typeof adaptive);
 
 console.log(screens.length);
 console.log(servicePercentPrice);
-
-
 console.log('Стоимость верстки экранов ' + screenPrice + " рублей" + " Стоимость разработки сайтов " + fullPrice + " рублей" );
 
 
