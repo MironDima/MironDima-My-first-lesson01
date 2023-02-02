@@ -14,20 +14,7 @@ let servicePercentPrice
  let service1 
 let service2 
 let a
-let num
 
-
-
-// const cup = function() {
-// 	const a = +prompt("Сколько это будет стоить?")
-// 		if (!isNaN(parseFloat(a) && isFinite(a))) {
-// 			return a
-// 		}
-// 		else {
-// 			return
-			
-// 		}
-// }
 
 const isNumber = function(num){
 	return !isNaN(parseFloat(num)) && isFinite(num)
@@ -66,12 +53,6 @@ const  getAllServicePrices = function(){
 		}else if(i === 1){
 			service2 = prompt("Какой дополнительный тип услуги нужен?")
 		}
-
-	// 	let cost
-	//  	 while (!cost) {
-	// 		cost = cup()
-	// 		if(cost) {
-	// 			sum += cost}}
 	let priceAll 
 		do {
 			priceAll = prompt("Сколько это будет стоить?")
