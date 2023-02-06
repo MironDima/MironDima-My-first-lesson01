@@ -9,7 +9,6 @@ const appData = {
  screens : '',
  screenPrice : 0,
  adaptive : true,
-
  rollback : 10,
  allServicePrices: 0,
  fullPrice: 0,
@@ -19,13 +18,15 @@ const appData = {
 
  start : function() {
 	appData.ascing();
-	appData.loggger()
+	
+	appData.allServicePrices = appData.getAllServicePrices();
+	appData.fullPrice = appData.getFullPrice()
+	appData.title = appData.getTitle();
+	appData.servicePercentPrice = appData.getServicePercentPrices() 
+	
+	appData.loggger();
 },	
-	loggger: function() {
-		for(let key in appData){
-			console.log("key: " + key + "," +' value: ' + appData[key])
-		}
-},
+	
 	
  ascing : function() {  				
 	appData.title = prompt('Как называется ваш проект?','калькулятор верстки');
@@ -83,15 +84,18 @@ getAllServicePrices : function(){ 			//method obj
 		else if( price < 0){
 			return 'Что то пошло не так'
 		}
-		}
+		},
+
+		loggger: function() {
+			for(let key in appData){
+				console.log("key: " + key + "," +' value: ' + appData[key])
+			}
+	}
 	
 }
 	appData.start()
 	
 
-appData.allServicePrices = appData.getAllServicePrices();
-appData.fullPrice = appData.getFullPrice()
-appData.title = appData.getTitle();
-appData.servicePercentPrice = appData.getServicePercentPrices()
+
 
 
