@@ -90,6 +90,9 @@ getAllServicePrices : function(){ 			//method obj
 			for(let key in appData){
 				console.log("key: " + key + "," +' value: ' + appData[key])
 			}
+		console.log(appData.fullPrice);
+		console.log(appData.servicePercentPrice);
+		
 	}
 	
 }
