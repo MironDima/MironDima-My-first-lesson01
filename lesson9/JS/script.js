@@ -1,40 +1,37 @@
 "use strict";
 
-const culcul = document.getElementsByTagName('h1')
+const title = document.getElementsByTagName('h1')[0]
 
-console.log(culcul[0]) 
+console.log(title) 
 
- const scoreBtns = document.getElementsByClassName('handler_btn')
+ const startBtn = document.getElementsByClassName('handler_btn')[0]
+ const resetBtn = document.getElementsByClassName('handler_btn')[1]
+ console.log(startBtn)
+ console.log(resetBtn)
 
- console.log(scoreBtns)
+ const buttunPlus = document.querySelector('.screen-btn')
+ console.log(buttunPlus);
 
- const plusBtn = document.querySelector('.screen-btn')
 
- console.log(plusBtn);
+ const  otherItemPercent = document.querySelectorAll('.other-items.percent')
+ console.log(otherItemPercent);
+ const  otherItemNumber  = document.querySelectorAll('.other-items.number')
+ console.log(otherItemNumber);
 
- const  percentItems = document.querySelectorAll('.other-items.percent')
- console.log(percentItems);
+ const inputRange = document.querySelector('.rollback  input')
+ console.log(inputRange);
 
- const  numberItems  = document.querySelectorAll('.other-items.number')
+ const inputRangeValue  = document.querySelector('.rollback .range-value')
+ console.log(inputRangeValue);
 
- console.log(numberItems);
+ const  total = document.getElementsByClassName('total-input')[0]
+ const  totalCount = document.getElementsByClassName('total-input')[1]
+ const  totalInputOther = document.getElementsByClassName('total-input')[2]
+ const  fullTotalInput = document.getElementsByClassName('total-input')[3]
+ const  totalCountRollBack = document.getElementsByClassName('total-input')[4]
 
- const rollback = document.querySelector('.rollback > div > input')
-
- console.log(rollback);
-
- const span  = document.querySelector('.rollback > div > span')
- console.log(span);
-
- const  totalInput = document.getElementsByClassName('total-input')
- console.log(totalInput[0].localName);
- console.log(totalInput[1].localName);
- console.log(totalInput[2].localName);
- console.log(totalInput[3].localName);
- console.log(totalInput[4].localName);
-
-let  screen = document.querySelectorAll('.screen')
-console.log(screen);
+let  screens = document.querySelectorAll('.screen')
+console.log(screens);
 
 
 const isNumber = function (num) {  //method obj
