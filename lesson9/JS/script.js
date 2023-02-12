@@ -36,18 +36,13 @@ console.log(title)
 let  screens = document.querySelectorAll('.screen')
 	console.log(screens);
 
-
-const isStr = function (str) {
-	return isFinite(str)
-}
-
 const appData = {
 	title: '',
 	screens: [],
 	screenPrice: 0,
-	numberScreens:0,
+	screenCount:0,
 	adaptive: true,
-	rollback: 10,
+	rollback: 0,
 	ServicePricesPercent: 0,
 	ServicePricesNumber: 0,
 	fullPrice: 0,
@@ -60,16 +55,14 @@ const appData = {
 		startBtn.addEventListener('click',appData.start) 
 		buttunPlus.addEventListener('click',appData.addScreenBlock)
 		
+
 		inputRange.addEventListener('input',appData.addRollbak)
 
 	},
 
-
-
 	addTitle : function() {
 		document.title = title.textContent  
 	},
-
 
 	start: function () {
 		appData.addScreens()
@@ -85,41 +78,41 @@ const appData = {
 
 	addScreens : function() {
 		screens = document.querySelectorAll('.screen')
-
+ 
 		screens.forEach(function(screen,index){  //перебираем методом screens,получаем и select и инпут
 			const select = screen.querySelector('select') //получаем  селекта и заносим в переменную
 			const input = screen.querySelector('input')	//получаем  инпут и заносим в переменную
 			const selectName = select.options[select.selectedIndex].textContent
-			
-			appData.screens.push({
-				id: index,
-				name: selectName,
-				price: +select.value * +input.value,
-				count: +input.value
-			 })
+			input.addEventListener('click',function(){
+				if(screens.name != '' && screens.count != ''){
+					startBtn.disabled = false
+				}
+			})
+			console.log( (selectName == "Тип экранов" && +input.value >= 0) ||
+			input.value === "Количество экранов") ;
+				if( (selectName == "Тип экранов" && +input.value >= 0) ||
+				input.value === "Количество экранов"){
+					appData.init()
+				}
+				else{
+					appData.screens.push({
+						id: index,
+						name: selectName,
+						price: +select.value * +input.value,
+						count: +input.value
+					 })	
+				}
 
-			 if( +select.value === 0 && +input.value === 0){
-				startBtn.disabled = true
-			}
-			else{
-				startBtn.disabled = false
-			}
-			console.log(+select.value);
-			console.log(+input.value);
-			console.log(appData.screens);
-			
-		})
-		
-		
+		})		
 		},
 
-		
-
+	
+	
 	showResult : function() {
 			total.value = appData.screenPrice
 			totalCountOther.value = appData.ServicePricesPercent +  appData.ServicePricesNumber
 			fullTotalCount.value = appData.fullPrice
-			totalCount.value = appData.numberScreens
+			totalCount.value = appData.screenCount
 			totalCountRollBack.value = 	appData.servicePercentPrice 
 		},
 
@@ -158,14 +151,10 @@ const appData = {
  
 	addPrices: function () {                   //выщитывает стоимоть наших услуг и экранов
 		for (let screen of appData.screens) {
-			appData.screenPrice += +screen.price
+			appData.screenPrice += screen.price
+			appData.screenCount += screen.count
+
 		};
-
-		for(let screen of appData.screens){
-			appData.numberScreens += +screen.count
-		}
-
-
 		for (let key in appData.servicesNumber) {
 			appData.ServicePricesNumber += appData.servicesNumber[key]
 
@@ -179,20 +168,13 @@ const appData = {
 		appData.fullPrice = +appData.screenPrice + appData.ServicePricesPercent + appData.ServicePricesNumber
 		
 		appData.servicePercentPrice = appData.fullPrice - (appData.fullPrice * (appData.rollback / 100)) // доход с учетом отката посреднику.
-		
-
+	
 	},
 
-	// prevDefault : function(event){
-	// 	if(appData.screens.select === 0){
-	// 		event.preventDefault()
-	// 		alert('Выберите тип экранов')
-	// 	}
-	// },
-
 	addRollbak: function(event){
-		inputRangeValue.innerHTML = event.target.value + '%' 
-		
+		inputRangeValue.textContent = event.target.value + '%' 
+		//inputRangeValue.textContent = `${event.target.value}%`
+
 		console.log(rollback);
 	},
 		
@@ -203,7 +185,7 @@ const appData = {
 	}
 
 }
-appData.init()
+	appData.init()
 
 
 
