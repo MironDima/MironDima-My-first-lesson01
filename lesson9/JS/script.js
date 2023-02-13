@@ -149,7 +149,9 @@ const appData = {
 			console.log(cloneScreen);
 		},
  
-	addPrices: function () {                   //выщитывает стоимоть наших услуг и экранов
+	addPrices: function () {     //выщитывает стоимоть наших услуг и экранов
+			appData.rollback = +inputRange.value
+			console.log(inputRange.value);
 		for (let screen of appData.screens) {
 			appData.screenPrice += screen.price
 			appData.screenCount += screen.count
@@ -174,8 +176,8 @@ const appData = {
 	addRollbak: function(event){
 		inputRangeValue.textContent = event.target.value + '%' 
 		//inputRangeValue.textContent = `${event.target.value}%`
-
-		console.log(rollback);
+		console.log(inputRange.value);
+		
 	},
 		
 	loggger: function () {
