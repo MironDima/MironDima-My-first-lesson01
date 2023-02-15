@@ -185,11 +185,11 @@ const appData = {
 		console.log(appData.servicePercentPrice);
 		console.log(appData.screens);
 	}
-
+ 
 }
 	appData.init()
 
-
+  
 
 
 
