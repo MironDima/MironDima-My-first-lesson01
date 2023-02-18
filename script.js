@@ -2,6 +2,11 @@
 
 //блок обьявления переменных
 
+
+
+
+
+
 let title 
 let screens
 let screenPrice 
