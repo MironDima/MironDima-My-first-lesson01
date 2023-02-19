@@ -14,9 +14,6 @@ let servicePercentPrice
  let service1 
 let service2 
 
-
-
-
 const inNumber = function (num) {
 	return !isNaN(parseFloat(num) && isFinite(num) )
 }
