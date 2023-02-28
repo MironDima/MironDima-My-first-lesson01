@@ -25,9 +25,16 @@ const title = document.getElementsByTagName('h1')[0]
  const  totalCountOther = document.getElementsByClassName('total-input')[2]
  const  fullTotalCount = document.getElementsByClassName('total-input')[3]
  const  totalCountRollBack = document.getElementsByClassName('total-input')[4]
+ let  screens = document.querySelectorAll('.screen')
 
-let  screens = document.querySelectorAll('.screen')
-console.log(screens);
+
+const cms = document.getElementById('cms-open')
+const checkBoxCms = document.querySelector('input[type = "checkbox"]')
+const blockCmsVariants = document.querySelector('.hidden-cms-variants')
+
+
+const selectCms = blockCmsVariants.querySelector('.main-controls__select > select')
+const  otherInput = blockCmsVariants.querySelector('.main-controls__input')
 
 
 
@@ -44,11 +51,15 @@ const appData = {
 	servicePercentPrice: 0,		//откат посреднику
 	servicesPercent: {},  		//обьект для ввода доп услуг в %
 	servicesNumber: {},			//обьект для ввода доп услуг фиксир
+	isError : false,
 
-	
+	addTitle : function() {
+		document.title = title.textContent  
+	},
+
 	init: function(){  
 		this.addTitle()
-		console.log(this);
+		
 		startBtn.addEventListener('click',() =>{
 			this.start()
 		}) 
@@ -64,7 +75,146 @@ const appData = {
 		resetBtn.addEventListener('click', () => {
 			this.reset()
 		})	
+
+		cms.addEventListener('click' , () => {    //слушатель cms
+			this.showCms()
+		})
+
 	},
+
+	start: function () {
+		this.checkStartBtn()
+		this.addScreens()
+		this.addServices()
+		this.addPrices();
+		this.showResult()
+		this.blockBtn()
+		
+	},
+
+	showCms : function() {       //открытие блока cms
+
+        if(cms.checked){
+            blockCmsVariants.style.display = 'flex'
+        }
+		selectCms.addEventListener('change', () => {
+			if(selectCms.selectedIndex == 2){
+				otherInput.style.display = 'block'
+			}
+		})
+    },
+
+	addScreens : function() {	//добавление в массив элементов
+		screens = document.querySelectorAll('.screen')
+		
+		screens.forEach((screen,index) => {  //перебираем методом screens,получаем и select и инпут
+			const select = screen.querySelector('select') //получаем  селекта и заносим в переменную
+			const input = screen.querySelector('input')	//получаем  инпут и заносим в переменную
+			const selectName = select.options[select.selectedIndex].textContent
+					this.screens.push({
+						id: index,
+						name: selectName,
+						price: +select.value * +input.value,
+						count: +input.value
+					 })	
+				})
+		},
+
+	showResult : function() {	//показ инпутов в блоке итого
+		
+			total.value = this.screenPrice  	// выводим Стоимость верстки
+			totalCountOther.value = this.ServicePricesPercent +  this.ServicePricesNumber  //стоимость суммы адаптации
+			fullTotalCount.value = this.fullPrice   	// итоговая стоимость
+			totalCount.value = this.screenCount   	 // выводим кол-во экранов
+			totalCountRollBack.value = 	this.servicePercentPrice   //откат посреднику
+		},
+
+	addServices: function(){  		//вывод  адаптации на страницу
+			
+			otherItemPercent.forEach((item) => {   //в процентах 
+				const check = item.querySelector('input[type="checkbox"]')
+				const label = item.querySelector('label')
+				const input = item.querySelector('input[type="text"]')
+				
+				
+				if(check.checked){
+					this.servicesPercent[label.textContent] = +input.value
+				}
+				
+			}),
+
+			otherItemNumber.forEach((item) => {   //в фиксированной
+				const check = item.querySelector('input[type="checkbox"]')
+				const label = item.querySelector('label')
+				const input = item.querySelector('input[type="text"]')
+		       
+				if(check.checked){
+					this.servicesNumber[label.textContent] = +input.value
+				}
+			})
+
+		},
+			
+	addScreenBlock: function() {  //создаем клон по нажатию на +
+
+			const cloneScreen = screens[0].cloneNode(true)
+			screens[screens.length-1].after(cloneScreen)
+			console.log(screens);
+		},
+ 
+	addPrices: function () {     //выщитывает стоимоть наших услуг и экранов
+		
+		this.rollback = +inputRange.value    //значение  rollback - значение ползунка
+			
+		for (let screen of this.screens) {
+			this.screenPrice += screen.price 		//Стоимость верстки
+			this.screenCount += screen.count  		//кол-во экранов
+		};
+
+		for (let key in this.servicesNumber) {  	//доп услуги фиксированная
+			this.ServicePricesNumber += this.servicesNumber[key]
+
+		}
+
+		for (let key in this.servicesPercent) {  	//доп услуги проценты
+			this.ServicePricesPercent += (this.screenPrice * (this.servicesPercent[key] / 100))
+
+		}
+
+		this.fullPrice = +this.screenPrice + this.ServicePricesPercent + this.ServicePricesNumber  // тоговая стоимость
+		
+		this.servicePercentPrice = this.fullPrice - (this.fullPrice * (this.rollback / 100)) 	// отката посреднику.
+	},
+
+	checkStartBtn : function(){              //проверка кнопки старт
+		screens = document.querySelectorAll('.screen')
+		
+		screens.forEach((screen,index) => { 
+			const select = screen.querySelector('select')
+			const input = screen.querySelector('input')
+			const selectName = select.options[select.selectedIndex].textContent
+
+		
+			console.log((selectName == 'Тип экранов' && +input.value >= 0 )|| input.value == 'Количество экранов');
+			console.log(selectName);  //так как у селекта нет значения!
+			console.log(input.value);
+
+			if((selectName == 'Тип экранов' && +input.value >= 0 )|| input.value == 'Количество экранов'){
+				this.isError = true
+				console.log('error');
+			}
+			
+			if(!this.isError){
+				console.log('good');
+				this.init()
+			}
+			startBtn.disabled = true  
+
+		})
+		
+				
+	},
+
 
 	blockBtn : function(){
 		screens.forEach((screen) => {     
@@ -75,7 +225,6 @@ const appData = {
 		})
 
 		
-		startBtn.style.display = 'none'
 		resetBtn.style.display = 'block'
 	},
 
@@ -104,7 +253,7 @@ const appData = {
 		this.ServicePricesNumber = 0,		
 		this.fullPrice = 0,				
 		this.servicePercentPrice = 0
-		this.servicesPercent = {},  		//обьект для ввода доп услуг в %
+		this.servicesPercent = {},  		
 		this.servicesNumber = {},	
 		console.log(this);
 
@@ -156,125 +305,6 @@ const appData = {
 
 	},
 
-
-
-	addTitle : function() {
-		document.title = title.textContent  
-	},
-
-	start: function () {
-		this.addScreens()
-		
-		this.addServices()
-
-		this.addPrices();
-	
-		this.showResult()
-
-		this.blockBtn()
-	},
-
-
-	addScreens : function() {
-		screens = document.querySelectorAll('.screen')
-		
-		screens.forEach((screen,index) => {  //перебираем методом screens,получаем и select и инпут
-			const select = screen.querySelector('select') //получаем  селекта и заносим в переменную
-			const input = screen.querySelector('input')	//получаем  инпут и заносим в переменную
-			const selectName = select.options[select.selectedIndex].textContent
-
-			input.addEventListener('click', () => {
-				if(screens.name != '' && screens.count != ''){
-					startBtn.disabled = false
-				}
-			})
-				if( (selectName == "Тип экранов" && +input.value >= 0) ||
-				input.value === "Количество экранов"){
-					this.init()
-				}
-				else{
-					this.screens.push({
-						id: index,
-						name: selectName,
-						price: +select.value * +input.value,
-						count: +input.value
-					 })	
-				}
-		})		
-		},
-
-	showResult : function() {
-		
-			total.value = this.screenPrice  	// выводим Стоимость верстки
-			totalCountOther.value = this.ServicePricesPercent +  this.ServicePricesNumber  //стоимость суммы адаптации
-			fullTotalCount.value = this.fullPrice   	// итоговая стоимость
-			totalCount.value = this.screenCount   	 // выводим кол-во экранов
-			totalCountRollBack.value = 	this.servicePercentPrice   //откат посреднику
-		},
-
-	addServices: function(){  		//вывод  адаптации на страницу
-			
-			otherItemPercent.forEach((item) => {   //в процентах 
-				const check = item.querySelector('input[type="checkbox"]')
-				const label = item.querySelector('label')
-				const input = item.querySelector('input[type="text"]')
-				
-				
-				if(check.checked){
-					this.servicesPercent[label.textContent] = +input.value
-				}
-				
-			}),
-
-			otherItemNumber.forEach((item) => {   //в фиксированной
-				const check = item.querySelector('input[type="checkbox"]')
-				const label = item.querySelector('label')
-				const input = item.querySelector('input[type="text"]')
-		       
-				if(check.checked){
-					this.servicesNumber[label.textContent] = +input.value
-				}
-			})	
-		},
-
-	addScreenBlock: function() {  //создаем клон по нажатию на +
-
-			const cloneScreen = screens[0].cloneNode(true)
-			screens[screens.length-1].after(cloneScreen)
-			console.log(screens);
-		},
- 
-	addPrices: function () {     //выщитывает стоимоть наших услуг и экранов
-		
-		this.rollback = +inputRange.value    //значение  rollback - значение ползунка
-			console.log(inputRange.value);
-
-		for (let screen of this.screens) {
-			this.screenPrice += screen.price 		//Стоимость верстки
-			this.screenCount += screen.count  		//кол-во экранов
-		};
-
-		for (let key in this.servicesNumber) {  	//доп услуги фиксированная
-			this.ServicePricesNumber += this.servicesNumber[key]
-
-		}
-
-		for (let key in this.servicesPercent) {  	//доп услуги проценты
-			this.ServicePricesPercent += (this.screenPrice * (this.servicesPercent[key] / 100))
-
-		}
-
-		this.fullPrice = +this.screenPrice + this.ServicePricesPercent + this.ServicePricesNumber  // тоговая стоимость
-		
-		this.servicePercentPrice = this.fullPrice - (this.fullPrice * (this.rollback / 100)) 	// отката посреднику.
-	},
-
-	// loggger: function () {
-		
-	// 	console.log(this.fullPrice);
-	// 	console.log(this.servicePercentPrice);
-	// 	console.log(this.screens);
-	// }
 }
 	
  appData.init();
