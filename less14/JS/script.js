@@ -1,5 +1,4 @@
 "use strict";
-
 const title = document.getElementsByTagName('h1')[0];
 
 const startBtn = document.getElementsByClassName('handler_btn')[0];			 //рассчитать
