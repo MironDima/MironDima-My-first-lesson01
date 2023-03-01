@@ -38,13 +38,15 @@ const appData = {
 	servicePercentPrice: 0,														//откат посреднику
 	servicesPercent: {},  														//обьект для ввода доп услуг в %
 	servicesNumber: {},															//обьект для ввода доп услуг фиксир
-	isError: false,
+	isError: false,																//флажок на проверке кнопки старт
+	cmsPrice: 0,																//цена сms значение 50
 
 	addTitle: function () {
 		document.title = title.textContent;
 	},
 
 	init: function () {
+		console.log(this);
 		this.addTitle();
 
 		startBtn.addEventListener('click', () => {
@@ -74,15 +76,20 @@ const appData = {
 		this.addPrices();
 		this.showResult();
 		this.blockBtn();
+		console.log(this);
 	},
 
 	showCms: function () {       										//открытие блока cms
 		if (cms.checked) {
 			blockCmsVariants.style.display = 'flex';
 		}
-		selectCms.addEventListener('change', () => {
+		selectCms.addEventListener('input', () => {
 			if (selectCms.selectedIndex == 2) {
 				otherInput.style.display = 'block';
+			}
+			if (selectCms.selectedIndex == 1) {
+			this.cmsPrice = +selectCms.options[selectCms.selectedIndex].value
+			console.log(this.cmsPrice);
 			}
 		})
 	},
@@ -111,8 +118,7 @@ const appData = {
 	},
 
 	addServices: function () {  										//вывод  адаптации на страницу
-
-		otherItemPercent.forEach((item) => { 						  //в процентах 
+		otherItemPercent.forEach((item) => { 						 	 //в процентах 
 			const check = item.querySelector('input[type="checkbox"]');
 			const label = item.querySelector('label');
 			const input = item.querySelector('input[type="text"]');
@@ -152,23 +158,25 @@ const appData = {
 			this.ServicePricesPercent += (this.screenPrice * (this.servicesPercent[key] / 100));
 		};
 
-		this.fullPrice = +this.screenPrice + this.ServicePricesPercent + this.ServicePricesNumber;  // тоговая стоимость
+		if (cms.checked) {
+			console.log(cms.checked);
+			this.fullPrice = (+this.screenPrice + this.ServicePricesPercent + this.ServicePricesNumber) + ((+this.screenPrice + this.ServicePricesPercent + this.ServicePricesNumber)/this.cmsPrice)  // итоговая стоимость
+		}
+		else{
+			this.fullPrice = +this.screenPrice + this.ServicePricesPercent + this.ServicePricesNumber;
 
-		this.servicePercentPrice = this.fullPrice - (this.fullPrice * (this.rollback / 100)); 	// отката посреднику.
+		}
+		this.servicePercentPrice = this.fullPrice - (this.fullPrice * (this.rollback / 100));  		// отката посреднику.	
+		this.servicePercentPrice.toFixed(2)	
 	},
 
-	checkStartBtn: function () {              										//проверка кнопки старт
+	checkStartBtn: function () {              														//проверка кнопки старт
 		screens = document.querySelectorAll('.screen');
 		screens.forEach((screen, index) => {
 			const select = screen.querySelector('select');
 			const input = screen.querySelector('input');
-			const selectName = select.options[select.selectedIndex].textContent;   //так как у селекта нет значения!
-
-			console.log(selectName == 'Тип экранов' || input.value == 'Количество экранов');
-			console.log(selectName);
-			console.log(input.value);
-
-			if (selectName == 'Тип экранов' || input.value == 'Количество экранов') {
+			const selectName = select.options[select.selectedIndex].textContent;  					 //так как у селекта нет значения!
+			if (selectName == 'Тип экранов' || input.value == '' || input.value == 0) {
 				this.isError = true;
 			}
 			if (!this.isError) {
@@ -198,7 +206,7 @@ const appData = {
 
 		inputRange.value = 0;
 		inputRangeValue.textContent = `${inputRange.value}%`;
-
+		blockCmsVariants.style.display = 'none'
 		resetBtn.style.display = 'none';
 		startBtn.style.display = 'block';
 	},
@@ -206,14 +214,15 @@ const appData = {
 	deleteElems: function () {
 		this.screenPrice = 0;
 		this.screenCount = 0,
-			this.rollback = 0,
-			this.ServicePricesPercent = 0,
-			this.ServicePricesNumber = 0,
-			this.fullPrice = 0,
-			this.servicePercentPrice = 0
+		this.rollback = 0,
+		this.ServicePricesPercent = 0,
+		this.ServicePricesNumber = 0,
+		this.fullPrice = 0,
+		this.servicePercentPrice = 0
 		this.servicesPercent = {},
-			this.servicesNumber = {},
-			console.log(this);
+		this.servicesNumber = {},
+		this.cmsPrice = 0,
+		console.log(this);
 	},
 
 	deleteShowResult: function () {
