@@ -144,10 +144,15 @@ const appData = {
 	},
 
 	addScreenBlock: function () {  	 //создаем клон по нажатию на +
-											
-		const cloneScreen = screens[0].cloneNode(true);
-		screens[screens.length - 1].after(cloneScreen);
-		
+		newScreens = document.querySelectorAll('.screen')
+		newScreens.forEach(item => {
+			const cloneScreen = screens[0].cloneNode(true);
+			const cloneSelect = cloneScreen.querySelector('select')
+			const cloneInput = cloneScreen.querySelector('input')
+			screens[screens.length - 1].after(cloneScreen)
+			console.log(cloneSelect);
+			console.log(cloneInput);
+		})							
 		},
 	
 	addPrices: function () {     									//выщитывает стоимоть наших услуг и экранов
