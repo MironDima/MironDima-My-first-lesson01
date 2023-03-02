@@ -23,8 +23,11 @@ const checkBoxCms = document.querySelector('input[type = "checkbox"]');
 const blockCmsVariants = document.querySelector('.hidden-cms-variants');
 const selectCms = blockCmsVariants.querySelector('.main-controls__select > select')
 const  otherInput = blockCmsVariants.querySelector('.main-controls__input')
-let screens = document.querySelectorAll('.screen');
 
+let screens = document.querySelectorAll('.screen');
+let select 
+let input
+let selectName
 let newScreens = document.querySelectorAll('.screen')
 
 const appData = {
@@ -52,7 +55,7 @@ const appData = {
 		this.addTitle();
 
 		startBtn.addEventListener('click', () => {
-			this.screens = []
+			
 			this.checkStartBtn();
 		})
 
@@ -97,14 +100,12 @@ const appData = {
 		})
 	},
 
-	addScreens: function () {	
-										//добавление в массив элементов
-		screens = document.querySelectorAll('.screen');
-		this.screens = []	
+	addScreens: function () {										//добавление в массив элементов
+		screens = document.querySelectorAll('.screen');	
 		screens.forEach((screen, index) => { 						 //перебираем методом screens,получаем и select и инпут
-			const select = screen.querySelector('select');			//получаем  селекта и заносим в переменную
-			const input = screen.querySelector('input');			//получаем  инпут и заносим в переменную
-			const selectName = select.options[select.selectedIndex].textContent;
+			 select = screen.querySelector('select');			//получаем  селекта и заносим в переменную
+			 input = screen.querySelector('input');			//получаем  инпут и заносим в переменную
+			 selectName = select.options[select.selectedIndex].textContent;
 			this.screens.push({
 				id: index,
 				name: selectName,
@@ -183,29 +184,26 @@ const appData = {
 	},
 
 	checkStartBtn: function () {
-		    
-		screens = document.querySelectorAll('.screen'); 	//проверка кнопки старт
+		screens = document.querySelectorAll('.screen'); 				//проверка кнопки старт
 		console.log(this);
-		
 		screens.forEach((screen, index) => {
 			this.screens = []
-			const select = screen.querySelector('select');
-			const input = screen.querySelector('input');
-			const selectName = select.options[select.selectedIndex].textContent;  					 //так как у селекта нет значения!
-			
+			 select = screen.querySelector('select');
+			 input = screen.querySelector('input');
+			 selectName = select.options[select.selectedIndex].textContent;  					 //так как у селекта нет значения!
+			})
 			if (selectName == 'Тип экранов' || input.value == '' || input.value == 0) {
 				this.isError = true;
 			}
 			if (!this.isError) {
 				this.start();
 			}
-		})
 	},
 
 	blockBtn: function () {
 		screens.forEach((screen) => {
-			let select = screen.querySelector('select'); 		//получаю селект
-			let input = screen.querySelector('input');			//получаю инпут
+			 select = screen.querySelector('select'); 		//получаю селект
+			 input = screen.querySelector('input');			//получаю инпут
 			select.disabled = true;								//блок селекта
 			input.disabled = true;								//блок инпута
 		})
@@ -215,8 +213,8 @@ const appData = {
 
 	unBlockBtn: function () {
 		screens.forEach((screen) => {
-			let select = screen.querySelector('select'); 		//получаю селект
-			let input = screen.querySelector('input');			//получаю инпут
+			select = screen.querySelector('select'); 		//получаю селект
+			input = screen.querySelector('input');			//получаю инпут
 			select.disabled = false;								//разблок селекта
 			input.disabled = false;								//разблок инпута
 		})
@@ -265,9 +263,9 @@ const appData = {
 	deleteSelectInput: function () {
 		screens = document.querySelectorAll('.screen');
 		screens.forEach((item) => {
-			let select = item.querySelector('select');
+			 select = item.querySelector('select');
 			select.value = '';
-			let input = item.querySelector('input');
+			 input = item.querySelector('input');
 			input.value = '';
 		})
 	},
