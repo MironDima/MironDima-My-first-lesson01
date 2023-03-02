@@ -25,6 +25,8 @@ const selectCms = blockCmsVariants.querySelector('.main-controls__select > selec
 const  otherInput = blockCmsVariants.querySelector('.main-controls__input')
 let screens = document.querySelectorAll('.screen');
 
+let newScreens = document.querySelectorAll('.screen')
+
 const appData = {
 	title: '',																	//заголовок
 	screens: [],																//массив типа экр и кол-во
@@ -50,6 +52,7 @@ const appData = {
 		this.addTitle();
 
 		startBtn.addEventListener('click', () => {
+			this.screens = []
 			this.checkStartBtn();
 		})
 
@@ -76,7 +79,7 @@ const appData = {
 		this.addPrices();
 		this.showResult();
 		this.blockBtn();
-		console.log(this);
+	
 	},
 
 	showCms: function () {       										//открытие блока cms
@@ -94,8 +97,10 @@ const appData = {
 		})
 	},
 
-	addScreens: function () {										//добавление в массив элементов
+	addScreens: function () {	
+										//добавление в массив элементов
 		screens = document.querySelectorAll('.screen');
+		this.screens = []	
 		screens.forEach((screen, index) => { 						 //перебираем методом screens,получаем и select и инпут
 			const select = screen.querySelector('select');			//получаем  селекта и заносим в переменную
 			const input = screen.querySelector('input');			//получаем  инпут и заносим в переменную
@@ -138,11 +143,13 @@ const appData = {
 			})
 	},
 
-	addScreenBlock: function () {  										//создаем клон по нажатию на +
+	addScreenBlock: function () {  	 //создаем клон по нажатию на +
+											
 		const cloneScreen = screens[0].cloneNode(true);
 		screens[screens.length - 1].after(cloneScreen);
-	},
-
+		
+		},
+	
 	addPrices: function () {     									//выщитывает стоимоть наших услуг и экранов
 		this.rollback = +inputRange.value;   				 		//значение  rollback - значение ползунка
 		for (let screen of this.screens) {
@@ -170,12 +177,17 @@ const appData = {
 		this.servicePercentPrice.toFixed(2)	
 	},
 
-	checkStartBtn: function () {              														//проверка кнопки старт
-		screens = document.querySelectorAll('.screen');
+	checkStartBtn: function () {
+		    
+		screens = document.querySelectorAll('.screen'); 	//проверка кнопки старт
+		console.log(this);
+		
 		screens.forEach((screen, index) => {
+			this.screens = []
 			const select = screen.querySelector('select');
 			const input = screen.querySelector('input');
 			const selectName = select.options[select.selectedIndex].textContent;  					 //так как у селекта нет значения!
+			
 			if (selectName == 'Тип экранов' || input.value == '' || input.value == 0) {
 				this.isError = true;
 			}
