@@ -145,17 +145,10 @@ const appData = {
 	},
 
 	addScreenBlock: function () {  	 //создаем клон по нажатию на +
-		newScreens = document.querySelectorAll('.screen')
-		newScreens.forEach(item => {
 			const cloneScreen = screens[0].cloneNode(true);
-			const cloneSelect = cloneScreen.querySelector('select')
-			const cloneInput = cloneScreen.querySelector('input')
 			screens[screens.length - 1].after(cloneScreen)
-			console.log(cloneSelect);
-			console.log(cloneInput);
-		})							
-		},
-	
+	},
+
 	addPrices: function () {     									//выщитывает стоимоть наших услуг и экранов
 		this.rollback = +inputRange.value;   				 		//значение  rollback - значение ползунка
 		for (let screen of this.screens) {
@@ -187,7 +180,6 @@ const appData = {
 		screens = document.querySelectorAll('.screen'); 				//проверка кнопки старт
 		console.log(this);
 		screens.forEach((screen, index) => {
-			this.screens = []
 			 select = screen.querySelector('select');
 			 input = screen.querySelector('input');
 			 selectName = select.options[select.selectedIndex].textContent;  					 //так как у селекта нет значения!
